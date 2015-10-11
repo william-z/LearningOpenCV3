@@ -3,6 +3,8 @@
 
 #include "stdafx.h"
 
+#include "Fun.h"
+
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
 
@@ -34,6 +36,37 @@ int main(int argc, char** argv)
 			}
 
 			return 0;
+		}
+	}
+
+	if (argc == 3) {
+		if (strcmp(argv[1], "salt") == 0) {
+			Mat in = imread(argv[2]);
+
+			for (int i = 0; i < 1024; i++) {
+				Fun::Salt(in, i);
+				namedWindow("salt");
+				imshow("salt", in);
+				waitKey(1);
+			}
+
+			waitKey();
+		}
+
+		if (strcmp(argv[1], "reduce") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+			imshow("in", in);
+
+			//Mat out;
+			//in.copyTo(out);
+			namedWindow("out");
+			Fun::ReduceColor(in, 16);
+			imshow("out", in);
+
+			imwrite("out.jpg", in);
+
+			waitKey();
 		}
 	}
 

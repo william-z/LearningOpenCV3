@@ -7,6 +7,7 @@ class Fun
 {
 public:
 	static void Salt(cv::Mat &mat, int salt_num);
+	static void ReduceColor(cv::Mat &mat, int div = 64);
 };
 
 #endif
