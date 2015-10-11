@@ -19,16 +19,18 @@ void Fun::Salt(cv::Mat &mat, int salt_num)
 	}
 }
 
-void Fun::ReduceColor(cv::Mat &mat, int div /*= 64*/)
+void Fun::ReduceColor(cv::Mat &mat, int div /*= 8*/)
 {
 	int rows = mat.rows;
 	int cols = mat.cols * mat.channels();
+
+	uchar mask = 0xff << div;
 
 	for (int i = 0; i < rows; i++) {
 		uchar *row_data = mat.ptr<uchar>(i);
 
 		for (int j = 0; j < cols; j++) {
-			row_data[j] = row_data[j] / div*div + div / 2;
+			row_data[j] = row_data[j]&mask + div/2;
 		}
 	}
 }

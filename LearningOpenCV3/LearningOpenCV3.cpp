@@ -58,13 +58,9 @@ int main(int argc, char** argv)
 			namedWindow("in");
 			imshow("in", in);
 
-			//Mat out;
-			//in.copyTo(out);
 			namedWindow("out");
-			Fun::ReduceColor(in, 16);
+			Fun::ReduceColor(in, 5);
 			imshow("out", in);
-
-			imwrite("out.jpg", in);
 
 			waitKey();
 		}
