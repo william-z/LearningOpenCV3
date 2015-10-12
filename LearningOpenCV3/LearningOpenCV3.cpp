@@ -59,9 +59,81 @@ int main(int argc, char** argv)
 			imshow("in", in);
 
 			namedWindow("out");
-			Fun::ReduceColor(in, 5);
+			Fun::ReduceColor(in);
 			imshow("out", in);
 
+			waitKey();
+		}
+
+		if (strcmp(argv[1], "sharpen") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+			imshow("in", in);
+
+			Mat out;
+
+			namedWindow("out");
+			double duration;
+			duration = static_cast<double>(cv::getTickCount());
+
+			Fun::Sharpen(in, out);
+
+			duration = static_cast<double>(cv::getTickCount()) - duration;
+			duration /= cv::getTickFrequency(); // the elapsed time in s
+			cout << "take " << duration*1000 << "ms" << endl;
+
+			imshow("out", out);
+
+			waitKey();
+		}
+
+		if (strcmp(argv[1], "sharpen2d") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+			imshow("in", in);
+
+			Mat out;
+
+			namedWindow("out");
+			double duration;
+			duration = static_cast<double>(cv::getTickCount());
+
+			Fun::Sharpen2D(in, out);
+
+			duration = static_cast<double>(cv::getTickCount()) - duration;
+			duration /= cv::getTickFrequency(); // the elapsed time in s
+			cout << "take " << duration * 1000 << "ms" << endl;
+
+			imshow("out", out);
+
+			waitKey();
+		}
+
+		if (strcmp(argv[1], "split") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+			imshow("in", in);
+
+			Mat out;
+
+			namedWindow("outB");
+			double duration;
+			duration = static_cast<double>(cv::getTickCount());
+
+			std::vector<cv::Mat> planes;
+			cv::split(in, planes);
+
+			duration = static_cast<double>(cv::getTickCount()) - duration;
+			duration /= cv::getTickFrequency(); // the elapsed time in s
+			cout << "take " << duration * 1000 << "ms" << endl;
+
+			imshow("outB", planes[0]);
+
+			namedWindow("outG");
+			imshow("outG", planes[1]);
+
+			namedWindow("outR");
+			imshow("outR", planes[2]);
 			waitKey();
 		}
 	}
