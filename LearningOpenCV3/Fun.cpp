@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Fun.h"
 
+#include <vector>
 
 void Fun::Salt(cv::Mat &mat, int salt_num)
 {
@@ -81,16 +82,8 @@ void Fun::Sharpen2D(cv::Mat &image, cv::Mat &result)
 
 }
 
-cv::SparseMat ColorHistogram::GetSparseHistogram(const cv::Mat &image)
-{
-	cv::SparseMat hist(3, m_hist_size, CV_32F);
 
-	cv::calcHist(&image, 1, m_channels, cv::Mat(), hist, 3, m_hist_size, m_ranges);
-
-	return hist;
-}
-
-cv::Mat ColorHistogram::GetSparseHistogramImage(const cv::Mat &image)
+void Fun::Histogram(cv::Mat &image, std::vector<cv::Mat> &BGR_hist_imgs)
 {
 
 }

@@ -4,12 +4,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_PropertySheetDisplayName>opencv_debug</_PropertySheetDisplayName>
-    <IncludePath>E:\opencv\opencv3\opencv\build\include;$(IncludePath)</IncludePath>
+    <IncludePath>D:\opencv\opencv\build\include;E:\opencv\opencv3\opencv\build\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup>
     <Link>
       <AdditionalDependencies>opencv_world300d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>E:\opencv\opencv3\opencv\build\x86\vc12\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\opencv\opencv\build\x86\vc12\lib;E:\opencv\opencv3\opencv\build\x86\vc12\lib</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />
