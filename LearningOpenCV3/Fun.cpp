@@ -123,3 +123,67 @@ void Fun::Histogram(cv::Mat &image, cv::Mat &hist_img)
 			cv::Scalar(0, 0, 255), 2, 8, 0);
 	}
 }
+
+cv::Mat ApplyLookUp(cv::Mat &image, cv::Mat &lookup)
+{
+	cv::Mat result;
+	cv::LUT(image, lookup, result);
+	return result;
+}
+
+void Fun::Lookup(cv::Mat &image, cv::Mat &result)
+{
+	std::vector<cv::Mat> bgr_planes;
+	cv::split(image, bgr_planes);
+
+	int histSize = 256;
+
+	float range[] = { 0, 256 };
+	const float* ranges[] = { range };
+
+	cv::Mat hist[3];
+
+	int channels[] = { 0 };
+
+	cv::calcHist(&bgr_planes[0], 1, channels, cv::Mat(), hist[0], 1, &histSize, ranges);
+	cv::calcHist(&bgr_planes[1], 1, channels, cv::Mat(), hist[1], 1, &histSize, ranges);
+	cv::calcHist(&bgr_planes[2], 1, channels, cv::Mat(), hist[2], 1, &histSize, ranges);
+
+	int imin[3] = { 0, 0, 0 };
+	int imax[3] = { 255, 255, 255 };
+	int minValue = 0;
+
+	for (int i = 0; i < 3; i++) {
+		for (; imin[i] < 256; imin[i]++) {
+			if (hist[i].at<float>(imin[i]) > minValue)
+				break;
+		}
+
+		for (; imax[i] >= 0; imax[i]--){
+			if (hist[i].at<float>(imax[i]) > minValue)
+				break;
+		}
+	}
+
+	int dim = 256;
+	cv::Mat lut(1, &dim, CV_8UC3);
+
+	for (int j = 0; j < 3; j++) {
+		for (int i = 0; i < 256; i++) {
+			if (i < imin[j])
+				lut.at<cv::Vec3b>(i)[j] = 0;
+			else if (i > imax[j])
+				lut.at<cv::Vec3b>(i)[j] = 255;
+			else
+				lut.at<cv::Vec3b>(i)[j] = (uchar)(255.0*(i - imin[j]) / (imax[j] - imin[j]) + 0.5);
+		}
+	}
+
+	//cv::Mat lut(1, &dim, CV_8U);
+	//for (int i = 0; i < 256; i++) {
+	//	lut.at<uchar>(i) = 255 - i;
+	//}
+
+	result = ApplyLookUp(image, lut);
+
+}

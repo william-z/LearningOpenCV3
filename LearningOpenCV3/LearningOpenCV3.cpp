@@ -149,6 +149,37 @@ int main(int argc, char** argv)
 			imshow("Histogram", hist_img);
 			waitKey();
 		}
+
+		if (strcmp(argv[1], "lookup") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+			imshow("in", in);
+
+			Mat result;
+			Fun::Lookup(in, result);
+
+			namedWindow("Lookup");
+			imshow("Lookup", result);
+
+			waitKey();
+		}
+
+	}
+
+	if (argc == 4) {
+
+		if (strcmp(argv[1], "subs") == 0) {
+			Mat image1 = imread(argv[2]);
+			Mat image2 = imread(argv[3]);
+
+			Mat sub_img;
+			cv::subtract(image1, image2, sub_img);
+
+			namedWindow("sub");
+			imshow("sub", sub_img);
+
+			waitKey();
+		}
 	}
 
 	if (argc == 7) {  //example commandline: "C:\Users\Public\Pictures\Sample Pictures\Penguins.jpg" 50 50 200 200 200

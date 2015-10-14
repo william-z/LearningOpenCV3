@@ -11,6 +11,7 @@ public:
 	static void Sharpen(cv::Mat &image, cv::Mat &result);
 	static void Sharpen2D(cv::Mat &image, cv::Mat &result);
 	static void Histogram(cv::Mat &image, cv::Mat &hist_img);
+	static void Lookup(cv::Mat &image, cv::Mat &result);
 };
 
 
