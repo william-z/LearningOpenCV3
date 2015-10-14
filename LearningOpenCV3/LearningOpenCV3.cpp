@@ -136,6 +136,19 @@ int main(int argc, char** argv)
 			imshow("outR", planes[2]);
 			waitKey();
 		}
+
+		if (strcmp(argv[1], "hist") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+			imshow("in", in);
+
+			Mat hist_img;
+			Fun::Histogram(in, hist_img);
+
+			namedWindow("Histogram");
+			imshow("Histogram", hist_img);
+			waitKey();
+		}
 	}
 
 	if (argc == 7) {  //example commandline: "C:\Users\Public\Pictures\Sample Pictures\Penguins.jpg" 50 50 200 200 200

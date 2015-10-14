@@ -83,7 +83,43 @@ void Fun::Sharpen2D(cv::Mat &image, cv::Mat &result)
 }
 
 
-void Fun::Histogram(cv::Mat &image, std::vector<cv::Mat> &BGR_hist_imgs)
+void Fun::Histogram(cv::Mat &image, cv::Mat &hist_img)
 {
+	std::vector<cv::Mat> bgr_planes;
+	cv::split(image, bgr_planes);
 
+	int histSize = 256;
+
+	float range[] = { 0, 256 };
+	const float* ranges[] = { range };
+
+	cv::Mat hist[3];
+
+	int channels[] = { 0 };
+
+	cv::calcHist(&bgr_planes[0], 1, channels, cv::Mat(), hist[0], 1, &histSize, ranges);
+	cv::calcHist(&bgr_planes[1], 1, channels, cv::Mat(), hist[1], 1, &histSize, ranges);
+	cv::calcHist(&bgr_planes[2], 1, channels, cv::Mat(), hist[2], 1, &histSize, ranges);
+
+	int hist_w = 512;
+	int hist_h = 400;
+	int bin_w = cvRound((double)hist_w / histSize);
+
+	hist_img.create(hist_h, hist_w, CV_8UC3);
+
+	for (int i = 0; i < 3; i++) {
+		cv::normalize(hist[i], hist[i], 0, hist_img.rows, cv::NORM_MINMAX, -1, cv::Mat());
+	}
+
+	for (int i = 1; i < histSize; i++) {
+		cv::line(hist_img, cv::Point(bin_w*(i - 1), hist_h - cvRound(hist[0].at<float>(i - 1))),
+			cv::Point(bin_w*(i), hist_h - cvRound(hist[0].at<float>(i))),
+			cv::Scalar(255, 0, 0), 2, 8, 0);
+		cv::line(hist_img, cv::Point(bin_w*(i - 1), hist_h - cvRound(hist[1].at<float>(i - 1))),
+			cv::Point(bin_w*(i), hist_h - cvRound(hist[1].at<float>(i))),
+			cv::Scalar(0, 255, 0), 2, 8, 0);
+		cv::line(hist_img, cv::Point(bin_w*(i - 1), hist_h - cvRound(hist[2].at<float>(i - 1))),
+			cv::Point(bin_w*(i), hist_h - cvRound(hist[2].at<float>(i))),
+			cv::Scalar(0, 0, 255), 2, 8, 0);
+	}
 }

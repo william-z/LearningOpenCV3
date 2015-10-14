@@ -10,7 +10,7 @@ public:
 	static void ReduceColor(cv::Mat &mat, int div = 64);
 	static void Sharpen(cv::Mat &image, cv::Mat &result);
 	static void Sharpen2D(cv::Mat &image, cv::Mat &result);
-	static void Histogram(cv::Mat &image, std::vector<cv::Mat> &BGR_hist_imgs);
+	static void Histogram(cv::Mat &image, cv::Mat &hist_img);
 };
 
 
