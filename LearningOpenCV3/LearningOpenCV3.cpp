@@ -187,7 +187,7 @@ int main(int argc, char** argv)
 
 			Mat result;
 
-			cv::erode(in, result, cv::Mat());
+			cv::erode(in, result, cv::Mat(7, 7, CV_8U, cv::Scalar(1)));
 
 			namedWindow("out");
 			imshow("out", result);
