@@ -164,6 +164,50 @@ int main(int argc, char** argv)
 			waitKey();
 		}
 
+		if (strcmp(argv[1], "equal") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+
+			Mat result;
+			cvtColor(in, in, CV_BGR2GRAY);
+			imshow("in", in);
+
+			cv::equalizeHist(in, result);
+
+			namedWindow("equal");
+			imshow("equal", result);
+
+			waitKey();
+		}
+
+		if (strcmp(argv[1], "erode") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+			imshow("in", in);
+
+			Mat result;
+
+			cv::erode(in, result, cv::Mat());
+
+			namedWindow("out");
+			imshow("out", result);
+
+			waitKey();
+		}
+
+		if (strcmp(argv[1], "dila") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+			imshow("in", in);
+
+			Mat result;
+			cv::dilate(in, result, cv::Mat());
+
+			namedWindow("out");
+			imshow("out", result);
+
+			waitKey();
+		}
 	}
 
 	if (argc == 4) {
