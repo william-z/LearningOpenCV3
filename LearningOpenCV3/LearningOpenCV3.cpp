@@ -208,6 +208,87 @@ int main(int argc, char** argv)
 
 			waitKey();
 		}
+
+		if (strcmp(argv[1], "morph") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+			imshow("in", in);
+
+			Mat result;
+			cv::morphologyEx(in, result, cv::MORPH_GRADIENT, cv::Mat());
+
+			cv::threshold(result, result, 40, 255, cv::THRESH_BINARY_INV);
+
+			namedWindow("out");
+			imshow("out", result);
+
+			waitKey();
+		}
+
+		if (strcmp(argv[1], "corner") == 0) {
+			Mat in = imread(argv[2]);
+			namedWindow("in");
+			imshow("in", in);
+
+			cvtColor(in, in, CV_BGR2GRAY);
+
+			Mat cross(5,5, CV_8U, Scalar(0));
+			for (int i = 0; i < 5; i++) {
+				cross.at<uchar>(2, i) = 1;
+				cross.at<uchar>(i, 2) = 1;
+			}
+
+			Mat diamond(5,5, CV_8U, Scalar(1));
+			diamond.at<uchar>(0, 0) = 0;
+			diamond.at<uchar>(0, 1) = 0;
+			diamond.at<uchar>(1, 0) = 0;
+			diamond.at<uchar>(4, 4) = 0;
+			diamond.at<uchar>(3, 4) = 0;
+			diamond.at<uchar>(4, 3) = 0;
+			diamond.at<uchar>(4, 0) = 0;
+			diamond.at<uchar>(4, 1) = 0;
+			diamond.at<uchar>(3, 0) = 0;
+			diamond.at<uchar>(0, 4) = 0;
+			diamond.at<uchar>(0, 3) = 0;
+			diamond.at<uchar>(1, 4) = 0;
+
+			Mat square(5, 5, CV_8U, Scalar(1));
+
+			Mat x(5, 5, CV_8U, Scalar(0));
+			for (int i = 0; i < 5; i++) {
+				x.at<uchar>(i, i) = 1;
+				x.at<uchar>(4 - i, i) = 1;
+			}
+			
+			Mat result;
+			cv::dilate(in, result, cross);
+			cv::erode(result, result, diamond);
+
+			Mat result2;
+			cv::dilate(in, result2, x);
+			cv::erode(result2, result2, square);
+
+			cv::absdiff(result2, result, result);
+
+			cv::threshold(result, result, 40, 255, cv::THRESH_BINARY_INV);
+
+			//cvtColor(result, result, CV_BGR2GRAY);
+
+			Mat_<uchar>::const_iterator it = result.begin<uchar>();
+			Mat_<uchar>::const_iterator end = result.end<uchar>();
+
+			for (int i = 0; it != end; i++, it++) {
+				if (!*it) {
+					circle(in, Point(i%in.step, i / in.step), 5, Scalar(255, 0, 0));
+				}
+			}
+
+			namedWindow("out");
+			imshow("out", in);
+
+			waitKey();
+		}
+
 	}
 
 	if (argc == 4) {
@@ -225,6 +306,7 @@ int main(int argc, char** argv)
 			waitKey();
 		}
 	}
+
 
 	if (argc == 7) {  //example commandline: "C:\Users\Public\Pictures\Sample Pictures\Penguins.jpg" 50 50 200 200 200
 
